@@ -1,0 +1,5 @@
+{
+  "name": "Bybit Active Screener",
+  "description": "Real-time crypto screener for Bybit futures. Tracks momentum, volume, and funding rates for profitable trading.",
+  "requestFramePermissions": []
+}
