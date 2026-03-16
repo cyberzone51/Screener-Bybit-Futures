@@ -9,7 +9,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Search, Activity, Clock, Zap, Wallet, 
 import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
 import { ProAnalysisModal } from './ProAnalysisModal';
 
-const LazyChart: React.FC<{ symbol: string; timeframe: string }> = ({ symbol, timeframe }) => {
+const LazyChart = React.memo(({ symbol, timeframe }: { symbol: string; timeframe: string }) => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +21,7 @@ const LazyChart: React.FC<{ symbol: string; timeframe: string }> = ({ symbol, ti
           observer.disconnect();
         }
       },
-      { threshold: 0.01, rootMargin: '100px' }
+      { threshold: 0.01, rootMargin: '200px' }
     );
 
     if (containerRef.current) {
@@ -55,7 +55,7 @@ const LazyChart: React.FC<{ symbol: string; timeframe: string }> = ({ symbol, ti
       )}
     </div>
   );
-};
+});
 
 export const Screener: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -208,9 +208,10 @@ export const Screener: React.FC = () => {
           return toRes < 1.5 || toSup < 1.5;
         }
         if (activeFilter === 'new_listings') {
-          // Strictly within the last 30 days (30 * 24 * 60 * 60 * 1000 = 2592000000 ms)
           const launchTime = Number(t.launchTime || 0);
-          return launchTime > 0 && (Date.now() - launchTime) <= 2592000000;
+          // If launchTime is in seconds (less than 10^10), convert to ms
+          const launchTimeMs = launchTime > 0 && launchTime < 10000000000 ? launchTime * 1000 : launchTime;
+          return launchTimeMs > 0 && (Date.now() - launchTimeMs) <= 2592000000;
         }
         return true;
       });

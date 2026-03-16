@@ -56,10 +56,13 @@ export const useBybitTickers = () => {
   }, []);
 
   useEffect(() => {
-    fetchTickers();
-    // Poll every 3 seconds for near real-time updates
-    const interval = setInterval(fetchTickers, 3000);
-    return () => clearInterval(interval);
+    let timeoutId: NodeJS.Timeout;
+    const poll = async () => {
+      await fetchTickers();
+      timeoutId = setTimeout(poll, 1000);
+    };
+    poll();
+    return () => clearTimeout(timeoutId);
   }, [fetchTickers]);
 
   return { tickers, loading, error, lastUpdated };

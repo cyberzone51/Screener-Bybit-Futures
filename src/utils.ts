@@ -1,12 +1,12 @@
 export const formatPrice = (price: string | number): string => {
   const p = Number(price);
   if (isNaN(p)) return '0.00';
-  if (p < 0.0001) return p.toFixed(7);
-  if (p < 0.01) return p.toFixed(5);
-  if (p < 1) return p.toFixed(4);
-  if (p < 10) return p.toFixed(3);
-  if (p < 1000) return p.toFixed(2);
-  return p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  
+  if (p < 0.0001) return p.toFixed(8);
+  if (p < 0.01) return p.toFixed(6);
+  if (p < 1) return p.toFixed(5);
+  if (p < 100) return p.toFixed(4);
+  return p.toFixed(2);
 };
 
 export const formatVolume = (vol: string | number): string => {

@@ -22,6 +22,7 @@ async function startServer() {
             const newCache: Record<string, string> = {};
             data.result.list.forEach((item: any) => {
               newCache[item.symbol] = item.launchTime;
+              console.log(`Symbol: ${item.symbol}, LaunchTime: ${item.launchTime}`);
             });
             instrumentsCache = newCache;
             lastInstrumentsFetch = now;
